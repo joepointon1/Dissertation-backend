@@ -74,7 +74,7 @@ const getDiaryEntry = (req, res) => {
 const getAllDiaryEntries = (req, res) => {
     const userId = req.userId;
     
-    Diary.find({user:userId})
+    Diary.find({user:userId}, {title:1, event:1, date:1, updatedAt:1})
         .then(data => {
             if(data.length == 0) return res.status(404).send({message:`No entries found for user id ${userId}`})
             return res.send(data);
