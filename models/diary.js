@@ -15,7 +15,7 @@ const DiarySchema = new Schema({
         trim: true
     },
     date: {
-        type: Date,
+        type: String,
         // required: true
     },
     event: {
@@ -34,7 +34,7 @@ const DiarySchema = new Schema({
         type: String,
         trim: true
     },
-    cognitiveErrors: {
+    distortions: {
         type: String,
         trim: true
     },
