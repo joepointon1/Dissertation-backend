@@ -26,14 +26,14 @@ const updateDiaryEntry = (req, res) => {
     console.log(req.body.distortions)
     Diary.updateOne(
         {"user":userId, "_id": diaryId },
-        {$set: {"title": req.body.title, 
+                {"title": req.body.title, 
                 "event": req.body.event, 
                 "thoughts": req.body.thoughts, 
                 "beliefs":req.body.beliefs, 
                 "anxiety": req.body.anxiety, 
                 "distortions": req.body.distortions, 
                 "altInterpretation": req.body.altInterpretation, 
-                "private":req.body.private}}
+                "private":req.body.private}
     ).then(data =>{
         return res.send(data)
     }).catch(err =>{
