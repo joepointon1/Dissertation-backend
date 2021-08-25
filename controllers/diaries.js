@@ -76,7 +76,7 @@ const getAllDiaryEntries = (req, res) => {
     
     Diary.find({user:userId}, {title:1, event:1, date:1, updatedAt:1})
         .then(data => {
-            if(data.length == 0) return res.status(404).send({message:`No entries found for user id ${userId}`})
+            if(data.length == 0) return res.status(204).send({message:`No entries found for user id ${userId}`})
             return res.send(data);
         })
         .catch(err =>{
@@ -95,7 +95,7 @@ const searchDiaryEntries = async (req, res) => {
             res.send(data)
         })
         .catch(err => {
-            res.status(500).send(err.message)
+            res.status(500).send(err)
         })
    
 }
