@@ -31,7 +31,7 @@ const updateDiaryEntry = (req, res) => {
                 "thoughts": req.body.thoughts, 
                 "beliefs":req.body.beliefs, 
                 "anxiety": req.body.anxiety, 
-                "cognitiveErrors": req.body.cognitiveErrors, 
+                "distortions": req.body.cognitiveErrors, 
                 "altInterpretation": req.body.altInterpretation, 
                 "private":req.body.private}}
     ).then(data =>{
