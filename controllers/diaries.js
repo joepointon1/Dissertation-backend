@@ -37,7 +37,7 @@ const updateDiaryEntry = (req, res) => {
     ).then(data =>{
         return res.send(data)
     }).catch(err =>{
-        return res.status(404).send({message:err.message});
+        return res.status(404).send({message:err});
     })
     
 }
