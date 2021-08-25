@@ -35,7 +35,7 @@ const DiarySchema = new Schema({
         trim: true
     },
     distortions: {
-        type: String,
+        type: Array,
         trim: true
     },
     altInterpretation: {
