@@ -23,7 +23,7 @@ const updateDiaryEntry = (req, res) => {
     }
     const userId = req.userId;
     const diaryId = req.params.id;
-    console.log(req.body)
+    console.log(req.body.distortions)
     Diary.updateOne(
         {"user":userId, "_id": diaryId },
         {$set: {"title": req.body.title, 
