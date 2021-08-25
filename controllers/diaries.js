@@ -89,7 +89,7 @@ const searchDiaryEntries = async (req, res) => {
     const userId = req.userId;
     const searchString = req.body.search;
 
-    Diary.find({user:userId}).find({$text: {$search: searchString}})
+    Diary.find({user:userId}).find({$text: {$search: searchString, $caseSensitive:false, $language:"en"}})
         .then(data =>{
             if (data.length == 0) return res.status(404).send({message:"No results found for that search term"})
             res.send(data)
