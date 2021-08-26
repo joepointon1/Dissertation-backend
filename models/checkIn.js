@@ -8,18 +8,22 @@ const CheckInSchema = new Schema({
         require: true
     },
     emotions: {
-        type: String
+        type: Array
     },
     intensity: {
-        type: String
+        type: Array
     },
     activities: {
-        type: String
+        type: Array
     },
     note: {
         type: String
     }
-})
+},
+    {
+        timestamps:true
+    }
+)
 
 const CheckIn = mongoose.model("CheckIn", CheckInSchema);
 
