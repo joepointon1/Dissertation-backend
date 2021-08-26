@@ -17,7 +17,6 @@ export const signUp = (req, res) => {
 };
 
 export const signIn = (req, res) => {
-    console.log("connection")
     User.findOne({
         username: req.body.username
     })
@@ -37,7 +36,7 @@ export const signIn = (req, res) => {
             return res.status(401).send({acessToken: null, message: "Invalid password." });
         }
 
-        const token = jwt.sign({ id:user._id, isTherapist: user.isTherapist}, "top-secret", {expiresIn: 86400});
+        const token = jwt.sign({ id:user._id, isTherapist: user.isTherapist, rememberMe: req.body.rememberMe}, "top-secret", {expiresIn: 86400});
 
         res.status(200).send({
             id: user._id,
