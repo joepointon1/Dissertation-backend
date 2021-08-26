@@ -7,9 +7,14 @@ const CheckInSchema = new Schema({
         type: String,
         require: true
     },
-    emotions: {
-        type: Array
-    },
+    emotions: [{
+        name: {
+            type: String
+        },
+        intesity:{
+            type: String
+        }
+    }],
     intensity: {
         type: Array
     },
