@@ -115,10 +115,17 @@ export default {
 }
 
 function isPatientInTherapistList(id){
+    const userId = req.userId;
+
     Patient.find({therapistId: id})
         .then(data =>{
             if (data.length == 0) return false
-            console.log(data)
+            const patient = data.find(p => p.therapistId == userId);
+            if (patient){
+                return true;
+            }else{
+                return false;
+            }
         }).catch(err =>{
             console.log(err);
             return
