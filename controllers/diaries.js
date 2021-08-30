@@ -1,7 +1,7 @@
 import User from "../models/user.js";
 import indexOfAttr from "../helpers/indexOfAttr.js";
 import Diary from "../models/diary.js";
-import Patient from "../models/Patient.js";
+import Patient from "../models/patients.js";
 const createDiaryEntry = (req, res) =>{
     const userId = req.userId;
     
