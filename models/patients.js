@@ -17,7 +17,11 @@ const PatientSchema = new mongoose.Schema({
         type:String,
         require:true
     }
-})
+},
+    {
+        timestamps:true
+    }
+)
 PatientSchema.index({ "email" : "text"})
 
 const Patient = mongoose.model('Patient', PatientSchema);
