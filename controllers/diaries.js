@@ -121,6 +121,7 @@ export default {
   getPatientsEntries,
 };
 
+
 function isPatientInTherapistList(id, patientId) {
   let result;
   Patient.find({ therapistId: id })
