@@ -129,8 +129,10 @@ function isPatientInTherapistList(id, patientId) {
       console.log(patient)
       console.log(!patient)
       if (patient) {
+        console.log("true")
         return true
       } else {
+          console.log("false")
         return false;
       }
     })
