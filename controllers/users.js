@@ -58,7 +58,7 @@ export const validateToken = (req, res) => {
             return res.status(401).send({message:"User not authorized"});
         }
         else{
-            return res.stats(200).send({message:"User authorized"});
+            return res.status(200).send({message:"User authorized"});
         }
     })
     
