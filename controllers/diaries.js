@@ -82,6 +82,7 @@ const getAllDiaryEntries = (req, res) => {
 };
 
 const getPatientsEntries = (req, res) => {
+    console.log(req.body.patientId)
   if (isPatientInTherapistList(req.userId, req.body.patientId)) {
     getEntries(req.userId, res)
   }else{
@@ -122,8 +123,10 @@ export default {
 function isPatientInTherapistList(id, patientId) {
   Patient.find({ therapistId: id })
     .then((data) => {
+        console.log(data)
       if (data.length == 0) return false;
       const patient = data.find((p) => p._id == patientId);
+      console.log(patient)
       if (patient) {
         return true
       } else {
