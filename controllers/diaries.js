@@ -83,6 +83,7 @@ const getAllDiaryEntries = (req, res) => {
 
 const getPatientsEntries = (req, res) => {
     console.log(req.body.patientId)
+    console.log(isPatientInTherapistList(req.userId, req.body.patientId))
   if (isPatientInTherapistList(req.userId, req.body.patientId)) {
     getEntries(req.userId, res)
   }else{
