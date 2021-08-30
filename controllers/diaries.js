@@ -125,7 +125,7 @@ function isPatientInTherapistList(id, patientId) {
     .then((data) => {
         console.log(data)
       if (data.length == 0) return false;
-      const patient = data.find((p) => p._id == patientId);
+      const patient = data.find((p) => p.patientId == patientId);
       console.log(patient)
       if (patient) {
         return true
