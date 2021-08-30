@@ -1,5 +1,5 @@
 import express from "express";
-import { signUp, signIn, verifyToken } from "../controllers/users.js";
+import { signUp, signIn, validateToken } from "../controllers/users.js";
 
 const router = express.Router();
 
@@ -13,6 +13,6 @@ router.use(function(req, res, next){
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);
-router.post("/verifyToken", verifyToken);
+router.post("/validateToken", validateToken);
 
 export default router;
