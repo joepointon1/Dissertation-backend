@@ -72,16 +72,7 @@ const getDiaryEntry = (req, res) => {
 }
 
 const getAllDiaryEntries = (req, res) => {
-    let userId;
-    if(req.body.id){
-        //if id included in request therapist is trying to view patients diary
-        //check that the patient is in that therapists listen
-        isPatientInTherapistList(req.userId)
-        //set usedId to patients id
-    }else{
-        userId = req.userId;
-    }
- 
+    const userId = req.userId; 
     
     Diary.find({user:userId}, {title:1, event:1, date:1, updatedAt:1})
         .then(data => {
@@ -92,6 +83,10 @@ const getAllDiaryEntries = (req, res) => {
             res.status(500).send({message:`Error while trying to retrieve diary entries for user id ${userId}`})
         })
     
+}
+
+const getPatientsEntries = (req,res) => {
+    isPatientInTherapistList(req.userId)
 }
 
 const searchDiaryEntries = async (req, res) => {
@@ -115,7 +110,8 @@ export default {
     deleteDiaryEntry,
     getDiaryEntry,
     getAllDiaryEntries,
-    searchDiaryEntries
+    searchDiaryEntries,
+    getPatientsEntries
 }
 
 function isPatientInTherapistList(id){

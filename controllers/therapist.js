@@ -8,7 +8,6 @@ const addPatient = (req, res) => {
   const userId = req.userId;
   //check that the user to be added exists
   User.findOne({ email: req.body.email }).exec((err, patient) => {
-      console.log(patient)
     if (err) return res.status(500).send({ message: err.message });
     if (!patient)
       return res

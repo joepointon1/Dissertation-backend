@@ -13,6 +13,7 @@ router.delete("/deleteDiaryEntry/:id", diaries.deleteDiaryEntry);
 router.get("/getDiaryEntry/:id", diaries.getDiaryEntry);
 router.get("/getAllDiaryEntries", diaries.getAllDiaryEntries);
 router.post("/searchDiaryEntries", diaries.searchDiaryEntries);
+router.post("/getPatientsEntries", diaries.getPatientsEntries);
 
 export default router;
 
