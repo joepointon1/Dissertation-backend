@@ -47,3 +47,19 @@ export const signIn = (req, res) => {
         });
     });
 };
+
+export const verifyToken = (req, res) => {
+    // used when user auto logged in by remember me to check token
+   
+    const token = req.body.token;
+
+    jwt.verify(token, "top-secret", (err,decoded) =>{
+        if(err){
+            return res.status(401).send({message:"User not authorized"});
+        }
+        else{
+            return res.stats(200).send({message:"User authorized"});
+        }
+    })
+    
+}
