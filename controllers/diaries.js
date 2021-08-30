@@ -78,12 +78,12 @@ const getDiaryEntry = (req, res) => {
 };
 
 const getAllDiaryEntries = (req, res) => {
-  getDiaryEntries(req.userId, res)
+  getEntries(req.userId, res)
 };
 
 const getPatientsEntries = (req, res) => {
   if (isPatientInTherapistList(req.userId, req.body.patientId)) {
-    getDiaryEntries(req.userId, res)
+    getEntries(req.userId, res)
   }else{
       return res.status(404).send({messsage:"User not in therapist list"})
   }
