@@ -72,7 +72,7 @@ const getDiaryEntry = (req, res) => {
 }
 
 const getAllDiaryEntries = (req, res) => {
-    const userId;
+    let userId;
     if(req.body.id){
         //if id included in request therapist is trying to view patients diary
         //check that the patient is in that therapists listen
