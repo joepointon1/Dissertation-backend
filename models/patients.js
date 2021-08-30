@@ -8,6 +8,14 @@ const PatientSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true
+    },
+    firstName:{
+        type:String,
+        require: true
+    },
+    lastName:{
+        type:String,
+        require:true
     }
 })
 PatientSchema.index({ "email" : "text"})

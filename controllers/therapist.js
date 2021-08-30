@@ -11,7 +11,7 @@ const addPatient = (req, res) => {
         .exec((err, patient) => {
             if (err) return res.status(500).send({message:err.message}) 
             if (!patient) return res.status(404).send({message:`No user with email address ${req.body.email}`})
-            const newPatient = new Patient({therapistId: userId, ...req.body})
+            const newPatient = new Patient({therapistId: userId, firstName: patient.firstName, lastName: patient.lastName, ...req.body})
             newPatient.save((err, patient) => {
                 if (err) return res.status(500).send({message:err.message});
                 return res.send({message:"Patient added to list"})
