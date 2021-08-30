@@ -5,16 +5,12 @@ const PatientSchema = new mongoose.Schema({
         type:String,
         required: true
     },
-    username: {
-        type: String,
-        required: true
-    },
     email: {
         type: String,
         required: true
     }
 })
-PatientSchema.index({"username": "text", "email" : "text"})
+PatientSchema.index({ "email" : "text"})
 
 const Patient = mongoose.model('Patient', PatientSchema);
 
