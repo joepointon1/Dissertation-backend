@@ -50,7 +50,7 @@ export const signIn = (req, res) => {
 
 export const verifyToken = (req, res) => {
     // used when user auto logged in by remember me to check token
-   
+    console.log("right one")
     const token = req.body.token;
 
     jwt.verify(token, "top-secret", (err,decoded) =>{
