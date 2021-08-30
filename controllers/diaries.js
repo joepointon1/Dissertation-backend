@@ -121,25 +121,24 @@ export default {
 };
 
 function isPatientInTherapistList(id, patientId) {
+  let result;
   Patient.find({ therapistId: id })
     .then((data) => {
         console.log(data)
-      if (data.length == 0) return false;
+      if (data.length == 0) result = false;
       const patient = data.find((p) => p.patientId == patientId);
-      console.log(patient)
-      console.log(!patient)
+    
       if (patient) {
-        console.log("true")
-        return true
+        result = true
       } else {
-          console.log("false")
-        return false;
+        result = false;
       }
     })
     .catch((err) => {
       console.log(err);
       return;
     });
+  return result;
 }
 
 function getEntries(userId, res){
