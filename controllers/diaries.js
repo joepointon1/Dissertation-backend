@@ -72,7 +72,16 @@ const getDiaryEntry = (req, res) => {
 }
 
 const getAllDiaryEntries = (req, res) => {
-    const userId = req.userId;
+    const userId;
+    if(req.body.id){
+        //if id included in request therapist is trying to view patients diary
+        //check that the patient is in that therapists listen
+        isPatientInTherapistList(req.userId)
+        //set usedId to patients id
+    }else{
+        userId = req.userId;
+    }
+ 
     
     Diary.find({user:userId}, {title:1, event:1, date:1, updatedAt:1})
         .then(data => {
@@ -107,4 +116,15 @@ export default {
     getDiaryEntry,
     getAllDiaryEntries,
     searchDiaryEntries
+}
+
+function isPatientInTherapistList(id){
+    Patient.find({therapistId: id})
+        .then(data =>{
+            if (data.length == 0) return false
+            console.log(data)
+        }).catch(err =>{
+            console.log(err);
+            return
+        })
 }
