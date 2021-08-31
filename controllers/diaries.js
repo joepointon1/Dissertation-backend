@@ -76,12 +76,16 @@ const getDiaryEntry = (req, res) => {
   console.log(diaryId, "here1")
   Diary.find({ user: userId, _id: diaryId })
     .then((data) => {
-      if (data.length == 0)
+      if (data.length == 0){
         console.log(diaryId, "here2")
         return res
           .status(404)
           .send({ message: `No entries found with id ${diaryId}` });
-      return res.send(data);
+      }else{
+        return res.send(data);
+      }
+       
+      
     })
     .catch((err) => {
       res.status(500).send({
