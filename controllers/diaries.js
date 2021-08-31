@@ -143,7 +143,7 @@ async function isPatientInTherapistList(id, patientId) {
 }
 
 function getEntries(userId, res) {
-  Diary.find({ user: userId }, { title: 1, event: 1, date: 1, updatedAt: 1 })
+  Diary.find({ user: userId }, { title: 1, event: 1, date: 1, updatedAt: 1, _id: 1 })
     .then((data) => {
       if (data.length == 0)
         return res
