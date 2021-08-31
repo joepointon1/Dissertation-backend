@@ -61,6 +61,9 @@ const deleteDiaryEntry = (req, res) => {
 const getDiaryEntry = (req, res) => {
     console.log(req.body)
     console.log(req.body.diaryId)
+    for (const i in req.body){
+        console.log(`${i}: ${req.body[i]}`)
+    }
   let userId;
   if (req.body.therapist){
       userId = req.body.patientId
