@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 
 const verifyToken = (req, res, next) =>{
-    console.log("wrong one")
     const token = req.headers["x-access-token"];
 
     if(!token){
