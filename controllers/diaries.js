@@ -59,6 +59,7 @@ const deleteDiaryEntry = (req, res) => {
 };
 
 const getDiaryEntry = (req, res) => {
+    console.log(req.body)
   let userId;
   if (req.body.therapist){
       userId = req.body.patientId
