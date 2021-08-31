@@ -59,11 +59,11 @@ const deleteDiaryEntry = (req, res) => {
 };
 
 const getDiaryEntry = (req, res) => {
-    console.log(req.body)
-    console.log(req.body.diaryId)
-    for (const i in req.body){
-        console.log(`${i}: ${req.body[i]}`)
-    }
+  console.log(req.body)
+  console.log("diaryId",req.body.diaryId)
+  console.log("patientId",req.body.patientId)
+  console.log("therapist",req.body.therapist)
+  
   let userId;
   if (req.body.therapist){
       userId = req.body.patientId
@@ -72,12 +72,10 @@ const getDiaryEntry = (req, res) => {
   }
   
   const diaryId = req.body.diaryId;
-  console.log(req.body.diaryId, "request id")
-  console.log(diaryId, "here1")
+  
   Diary.find({ user: userId, _id: diaryId })
     .then((data) => {
       if (data.length == 0){
-        console.log(diaryId, "here2")
         return res
           .status(404)
           .send({ message: `No entries found with id ${diaryId}` });
