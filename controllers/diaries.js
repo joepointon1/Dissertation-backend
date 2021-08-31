@@ -60,6 +60,7 @@ const deleteDiaryEntry = (req, res) => {
 
 const getDiaryEntry = (req, res) => {
     console.log(req.body)
+    console.log(req.body.diaryId)
   let userId;
   if (req.body.therapist){
       userId = req.body.patientId
