@@ -78,16 +78,16 @@ const getDiaryEntry = (req, res) => {
 };
 
 const getAllDiaryEntries = (req, res) => {
-  getEntries(req.userId, res)
+  getEntries(req.userId, res);
 };
 
 const getPatientsEntries = (req, res) => {
-    console.log(req.body.patientId)
-    console.log(isPatientInTherapistList(req.userId, req.body.patientId))
+  console.log(req.body.patientId);
+  console.log(isPatientInTherapistList(req.userId, req.body.patientId));
   if (isPatientInTherapistList(req.userId, req.body.patientId)) {
-    getEntries(req.userId, res)
-  }else{
-      return res.status(404).send({messsage:"User not in therapist list"})
+    getEntries(req.body.patientId, res);
+  } else {
+    return res.status(404).send({ messsage: "User not in therapist list" });
   }
 };
 
@@ -121,30 +121,25 @@ export default {
   getPatientsEntries,
 };
 
-
-function isPatientInTherapistList(id, patientId) {
-  let result;
-  Patient.find({ therapistId: id })
-    .then((data) => {
-        console.log(data)
-      if (data.length == 0) result = false;
-      const patient = data.find((p) => p.patientId == patientId);
-    
-      if (patient) {
-        result = true
-      } else {
-        result = false;
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      return;
-    });
-  return result;
+async function isPatientInTherapistList(id, patientId) {
+  try {
+    const data = await Patient.find({ therapistId: id });
+    console.log(data);
+    if (data.length == 0) result = false;
+    const patient = data.find((p) => p.patientId == patientId);
+    if (patient) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 }
 
-function getEntries(userId, res){
-    Diary.find({ user: userId }, { title: 1, event: 1, date: 1, updatedAt: 1 })
+function getEntries(userId, res) {
+  Diary.find({ user: userId }, { title: 1, event: 1, date: 1, updatedAt: 1 })
     .then((data) => {
       if (data.length == 0)
         return res
@@ -156,5 +151,5 @@ function getEntries(userId, res){
       res.status(500).send({
         message: `Error while trying to retrieve diary entries for user id ${userId}`,
       });
-  });
+    });
 }
