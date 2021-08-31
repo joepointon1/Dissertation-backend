@@ -68,10 +68,11 @@ const getDiaryEntry = (req, res) => {
   }
   
   const diaryId = req.body.diaryId;
-
+  
   Diary.find({ user: userId, _id: diaryId })
     .then((data) => {
       if (data.length == 0)
+        console.log(diaryId, "here")
         return res
           .status(404)
           .send({ message: `No entries found with id ${diaryId}` });
