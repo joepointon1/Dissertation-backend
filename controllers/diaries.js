@@ -124,7 +124,6 @@ export default {
 async function isPatientInTherapistList(id, patientId) {
   try {
     const data = await Patient.find({ therapistId: id });
-    console.log(data);
     if (data.length == 0) result = false;
     const patient = data.find((p) => p.patientId == patientId);
     if (patient) {
@@ -133,7 +132,7 @@ async function isPatientInTherapistList(id, patientId) {
       return false;
     }
   } catch (err) {
-    console.log(err);
+    //maybe should return something else here
     return false;
   }
 }
