@@ -5,7 +5,7 @@ import checkIns from "../controllers/checkIns.js";
 
 const router = express.Router();
 
-router.use('/', [verifyToken]);
+router.use("/", [verifyToken]);
 
 router.post("/createCheckIn", checkIns.createCheckIn);
 router.put("/updateCheckIn/:id", checkIns.updateCheckIn);

@@ -5,7 +5,7 @@ import diaries from "../controllers/diaries.js";
 
 const router = express.Router();
 
-router.use('/', [verifyToken]);
+router.use("/", [verifyToken]);
 
 router.post("/createDiaryEntry", diaries.createDiaryEntry);
 router.put("/updateDiaryEntry/:id", diaries.updateDiaryEntry);
@@ -16,4 +16,3 @@ router.post("/searchDiaryEntries", diaries.searchDiaryEntries);
 router.post("/getPatientsEntries", diaries.getPatientsEntries);
 
 export default router;
-

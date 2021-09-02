@@ -5,10 +5,10 @@ import therapist from "../controllers/therapist.js";
 
 const router = express.Router();
 
-router.use('/', [verifyTherapist]);
+router.use("/", [verifyTherapist]);
 
-router.post('/addPatient', therapist.addPatient);
-router.delete('/removePatient', therapist.removePatient);
-router.get('/getAllPatients', therapist.getAllPatients);
-router.post('/searchPatients', therapist.searchPatients);
+router.post("/addPatient", therapist.addPatient);
+router.delete("/removePatient", therapist.removePatient);
+router.get("/getAllPatients", therapist.getAllPatients);
+router.post("/searchPatients", therapist.searchPatients);
 export default router;
