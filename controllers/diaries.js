@@ -59,7 +59,7 @@ const deleteDiaryEntry = (req, res) => {
 };
 
 const getDiaryEntry = (req, res) => {
-  const diaryId= req.params.diaryId
+  const diaryId = req.params.diaryId
 	let userId;
 	if (req.params.patientId != null) {
 		userId = req.body.patientId;
@@ -67,7 +67,6 @@ const getDiaryEntry = (req, res) => {
 		userId = req.userId;
 	}
 
-	const diaryId = req.body.diaryId;
 
 	Diary.find({ user: userId, _id: diaryId })
 		.then((data) => {
