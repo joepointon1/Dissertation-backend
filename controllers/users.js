@@ -32,7 +32,7 @@ export const signIn = (req, res) => {
 		let passwordIsValid;
 		bcrypt
 			.compare(req.body.password, user.password)
-			.then((result) => (passwordIsValid = result));
+			.then((result) => passwordIsValid = result);
 
 		if (!passwordIsValid) {
 			return res
