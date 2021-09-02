@@ -10,7 +10,7 @@ router.use("/", [verifyToken]);
 router.post("/createDiaryEntry", diaries.createDiaryEntry);
 router.put("/updateDiaryEntry/:id", diaries.updateDiaryEntry);
 router.delete("/deleteDiaryEntry/:id", diaries.deleteDiaryEntry);
-router.post("/getDiaryEntry/", diaries.getDiaryEntry);
+router.get("/getDiaryEntry/diaryId/patientId", diaries.getDiaryEntry);
 router.get("/getAllDiaryEntries", diaries.getAllDiaryEntries);
 router.post("/searchDiaryEntries", diaries.searchDiaryEntries);
 router.post("/getPatientsEntries", diaries.getPatientsEntries);
