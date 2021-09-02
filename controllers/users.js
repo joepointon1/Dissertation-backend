@@ -32,27 +32,31 @@ export const signIn = (req, res) => {
 		let passwordIsValid;
 		bcrypt
 			.compare(req.body.password, user.password)
-			.then((result) => passwordIsValid = result);
+			.then((result) => {
+				passwordIsValid = result
+				
+				if (!passwordIsValid) {
+					return res
+						.status(401)
+						.send({ acessToken: null, message: "Invalid password." });
+				}
+		
+				const token = jwt.sign(
+					{
+						id: user._id,
+						isTherapist: user.isTherapist,
+						rememberMe: req.body.rememberMe == "checked" ? true : false,
+					},
+					"top-secret",
+					{ expiresIn: 86400 }
+				);
+		
+				res.status(200).send({
+					accessToken: token,
+				});
+			});
 
-		if (!passwordIsValid) {
-			return res
-				.status(401)
-				.send({ acessToken: null, message: "Invalid password." });
-		}
-
-		const token = jwt.sign(
-			{
-				id: user._id,
-				isTherapist: user.isTherapist,
-				rememberMe: req.body.rememberMe == "checked" ? true : false,
-			},
-			"top-secret",
-			{ expiresIn: 86400 }
-		);
-
-		res.status(200).send({
-			accessToken: token,
-		});
+		
 	});
 };
 
