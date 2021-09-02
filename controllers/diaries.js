@@ -61,11 +61,9 @@ const deleteDiaryEntry = (req, res) => {
 const getDiaryEntry = (req, res) => {
   const diaryId = req.params.diaryId
 	let userId;
-	console.log(req.params)
-	console.log(req.params.patientId)
-	console.log(req.params.patientId != null)
+
 	if (req.params.patientId != null) {
-		userId = req.body.patientId;
+		userId = req.params.patientId;
 	} else {
 		userId = req.userId;
 	}
