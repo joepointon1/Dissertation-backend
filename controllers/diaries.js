@@ -67,7 +67,7 @@ const getDiaryEntry = (req, res) => {
 		userId = req.userId;
 	}
 
-
+	console.log(diaryId, userId)
 	Diary.find({ user: userId, _id: diaryId })
 		.then((data) => {
 			if (data.length == 0) {
