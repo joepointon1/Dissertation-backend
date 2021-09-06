@@ -61,17 +61,10 @@ const deleteDiaryEntry = (req, res) => {
 const getDiaryEntry = (req, res) => {
 	const diaryId = req.params.diaryId;
 
-	let userId;
-	if (req.params.patientId != null) {
-		if (!isPatientInTherapistList(req.userId, req.body.patientId)) {
-			return res.status(403).send({
-				message: `patient ${req.params.patientId} not in therapists list`,
-			});
-		}
-		userId = req.params.patientId;
-	} else {
-		userId = req.userId;
-	}
+	const userId = assignId(req.userId, req.params.patientId);
+	if (userId = null) return res.status(403).send({
+		message: `patient ${patientId} not in therapists list`,
+	}); 
 	
 	Diary.find({ user: userId, _id: diaryId })
 		.then((data) => {
@@ -91,21 +84,45 @@ const getDiaryEntry = (req, res) => {
 };
 
 const getAllDiaryEntries = (req, res) => {
-	getEntries(req.userId, res);
+	const userId = assignId(req.userId, req.patientId)
+	if (userId = null) return res.status(403).send({
+		message: `patient ${patientId} not in therapists list`,
+	}); 
+
+	Diary.find(
+		{ user: userId },
+		{ title: 1, event: 1, date: 1, updatedAt: 1, _id: 1 }
+	)
+		.then((data) => {
+			if (data.length == 0)
+				return res.status(404).send({
+					message: `No entries found for user id ${userId}`,
+				});
+			return res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: `Error while trying to retrieve diary entries for user id ${userId}`,
+			});
+		});
 };
 
-const getPatientsEntries = (req, res) => {
-	if (isPatientInTherapistList(req.userId, req.body.patientId)) {
-		getEntries(req.body.patientId, res);
-	} else {
-		return res.status(404).send({ messsage: "User not in therapist list" });
-	}
-};
+// const getPatientsEntries = (req, res) => {
+// 	if (isPatientInTherapistList(req.userId, req.body.patientId)) {
+// 		getEntries(req.body.patientId, res);
+// 	} else {
+// 		return res.status(404).send({ messsage: "User not in therapist list" });
+// 	}
+// };
 
 const searchDiaryEntries = async (req, res) => {
 	
 	const searchString = req.body.search;
-	const userId = assignId(req.userId, req.body.patientId, res)
+	const userId = assignId(req.userId, req.body.patientId)
+	if (userId = null) return res.status(403).send({
+		message: `patient ${patientId} not in therapists list`,
+	}); 
+
 	Diary.find({ user: userId })
 		.find({
 			$text: {
@@ -126,20 +143,7 @@ const searchDiaryEntries = async (req, res) => {
 		});
 };
 
-function assignId(currentUserId, patientId, res){
-		if(patientId != null){
-			if (!isPatientInTherapistList(currentUserId, patientId)) {
-				res.status(403).send({
-					message: `patient ${patientId} not in therapists list`,
-				});
-				return null;
-			}
-		 return patientId
-		}else{
-			return currentUserId
-		}
-		
-}
+
 
 export default {
 	createDiaryEntry,
@@ -148,8 +152,19 @@ export default {
 	getDiaryEntry,
 	getAllDiaryEntries,
 	searchDiaryEntries,
-	getPatientsEntries,
 };
+
+
+function assignId(currentUserId, patientId){
+	if(patientId != null){
+		if (!isPatientInTherapistList(currentUserId, patientId)) {
+			return null;
+		}
+	 return patientId
+	}else{
+		return currentUserId
+	}
+}
 
 async function isPatientInTherapistList(id, patientId) {
 	try {
@@ -167,21 +182,21 @@ async function isPatientInTherapistList(id, patientId) {
 	}
 }
 
-function getEntries(userId, res) {
-	Diary.find(
-		{ user: userId },
-		{ title: 1, event: 1, date: 1, updatedAt: 1, _id: 1 }
-	)
-		.then((data) => {
-			if (data.length == 0)
-				return res.status(404).send({
-					message: `No entries found for user id ${userId}`,
-				});
-			return res.send(data);
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message: `Error while trying to retrieve diary entries for user id ${userId}`,
-			});
-		});
-}
+// function getEntries(userId, res) {
+// 	Diary.find(
+// 		{ user: userId },
+// 		{ title: 1, event: 1, date: 1, updatedAt: 1, _id: 1 }
+// 	)
+// 		.then((data) => {
+// 			if (data.length == 0)
+// 				return res.status(404).send({
+// 					message: `No entries found for user id ${userId}`,
+// 				});
+// 			return res.send(data);
+// 		})
+// 		.catch((err) => {
+// 			res.status(500).send({
+// 				message: `Error while trying to retrieve diary entries for user id ${userId}`,
+// 			});
+// 		});
+// }
