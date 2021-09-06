@@ -128,9 +128,9 @@ const searchDiaryEntries = async (req, res) => {
 
 function assignId(currentUserId, patientId, res){
 		if(patientId != null){
-			if (!isPatientInTherapistList(currentUserId, req.body.patientId)) {
+			if (!isPatientInTherapistList(currentUserId, patientId)) {
 				res.status(403).send({
-					message: `patient ${req.params.patientId} not in therapists list`,
+					message: `patient ${patientId} not in therapists list`,
 				});
 				return null;
 			}
