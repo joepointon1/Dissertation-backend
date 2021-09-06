@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import indexOfAttr from "../helpers/indexOfAttr.js";
 import Diary from "../models/diary.js";
 import Patient from "../models/patient.js";
+
 const createDiaryEntry = (req, res) => {
 	const userId = req.userId;
 
@@ -59,70 +60,44 @@ const deleteDiaryEntry = (req, res) => {
 };
 
 const getDiaryEntry = (req, res) => {
-	const diaryId = req.params.diaryId;
-
-	const userId = assignId(req.userId, req.params.patientId);
-	if (userId == null) return res.status(403).send({
-		message: `patient ${patientId} not in therapists list`,
-	}); 
-	
-	Diary.find({ user: userId, _id: diaryId })
-		.then((data) => {
-			if (data.length == 0) {
-				return res
-					.status(404)
-					.send({ message: `No entries found with id ${diaryId}` });
-			} else {
-				return res.send(data);
-			}
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message: `Error while trying to retrieve diary entry with id ${diaryId}`,
-			});
-		});
+	getEntry(req.userId, req.params.diaryId, res)
 };
 
-const getAllDiaryEntries = (req, res) => {
-	const userId = assignId(req.userId, req.patientId)
-	if (userId == null) return res.status(403).send({
-		message: `patient ${patientId} not in therapists list`,
-	}); 
+const getPatientsEntry = (req, res) => {
+	if (isPatientInTherapistList(req.userId, req.params.patientId)) {
+		getEntry(req.params.patientId, req.params.diaryId, res);
+	} else {
+		return res.status(404).send({ messsage: "User not in therapist list" });
+	}
+}
 
-	Diary.find(
-		{ user: userId },
-		{ title: 1, event: 1, date: 1, updatedAt: 1, _id: 1 }
-	)
-		.then((data) => {
-			if (data.length == 0)
-				return res.status(404).send({
-					message: `No entries found for user id ${userId}`,
-				});
-			return res.send(data);
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message: `Error while trying to retrieve diary entries for user id ${userId}`,
-			});
-		});
+
+const getAllDiaryEntries = async (req, res) => {
+	getEntries(req.userId, res)
 };
 
-// const getPatientsEntries = (req, res) => {
-// 	if (isPatientInTherapistList(req.userId, req.body.patientId)) {
-// 		getEntries(req.body.patientId, res);
-// 	} else {
-// 		return res.status(404).send({ messsage: "User not in therapist list" });
-// 	}
-// };
+const getPatientsEntries = (req, res) => {
+	if (isPatientInTherapistList(req.userId, req.params.patientId)) {
+		getEntries(req.params.patientId, res);
+	} else {
+		return res.status(404).send({ messsage: "User not in therapist list" });
+	}
+};
 
-const searchDiaryEntries = async (req, res) => {
+const searchDiary = async (req, res) => {
 	
-	const searchString = req.body.search;
-	const userId = assignId(req.userId, req.body.patientId)
-	if (userId == null) return res.status(403).send({
-		message: `patient ${patientId} not in therapists list`,
-	}); 
+	searchEntries(req.userId, req.params.search, res)
+};
 
+const searchPatientsDiary = async (req,res) => {
+	if (isPatientInTherapistList(req.userId, req.params.patientId)) {
+		searchEntries(req.params.patientId, req.params.search,res);
+	} else {
+		return res.status(404).send({ messsage: "User not in therapist list" });
+	}
+}
+
+async function searchEntries(userId, searchString, res){
 	Diary.find({ user: userId })
 		.find({
 			$text: {
@@ -141,8 +116,7 @@ const searchDiaryEntries = async (req, res) => {
 		.catch((err) => {
 			res.status(500).send(err);
 		});
-};
-
+}
 
 
 export default {
@@ -151,12 +125,33 @@ export default {
 	deleteDiaryEntry,
 	getDiaryEntry,
 	getAllDiaryEntries,
-	searchDiaryEntries,
+	searchDiary,
+	getPatientsEntries,
+	getPatientsEntry,
+	searchPatientsDiary
 };
 
+async function getEntry(userId, diaryId, res) {
+	Diary.find({ user: userId, _id: diaryId })
+		.then((data) => {
+			if (data.length == 0) {
+				return res
+					.status(404)
+					.send({ message: `No entries found with id ${diaryId}` });
+			} else {
+				return res.send(data);
+			}
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: `Error while trying to retrieve diary entry with id ${diaryId}`,
+			});
+		});
+}
 
 function assignId(currentUserId, patientId){
 	if(patientId != null){
+		
 		if (!isPatientInTherapistList(currentUserId, patientId)) {
 			return null;
 		}
@@ -182,21 +177,38 @@ async function isPatientInTherapistList(id, patientId) {
 	}
 }
 
-// function getEntries(userId, res) {
-// 	Diary.find(
-// 		{ user: userId },
-// 		{ title: 1, event: 1, date: 1, updatedAt: 1, _id: 1 }
-// 	)
+// function isPatientInTherapistList(id, patientId) {
+// 	Patient.find({ therapistId: id })
 // 		.then((data) => {
-// 			if (data.length == 0)
-// 				return res.status(404).send({
-// 					message: `No entries found for user id ${userId}`,
-// 				});
-// 			return res.send(data);
+// 			if (data.length == 0) result = false;
+// 			const patient = data.find((p) => p.patientId == patientId);
+// 			if (patient) {
+// 				return true;
+// 			} else {
+// 				return false;
+// 			}
 // 		})
 // 		.catch((err) => {
-// 			res.status(500).send({
-// 				message: `Error while trying to retrieve diary entries for user id ${userId}`,
-// 			});
+// 			console.log(err);
+// 			return false;
 // 		});
 // }
+
+function getEntries(userId, res) {
+	Diary.find(
+		{ user: userId },
+		{ title: 1, event: 1, date: 1, updatedAt: 1, _id: 1 }
+	)
+		.then((data) => {
+			if (data.length == 0)
+				return res.status(404).send({
+					message: `No entries found for user id ${userId}`,
+				});
+			return res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: `Error while trying to retrieve diary entries for user id ${userId}`,
+			});
+		});
+}

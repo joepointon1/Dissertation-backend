@@ -10,9 +10,12 @@ router.use("/", [verifyToken]);
 router.post("/createDiaryEntry", diaries.createDiaryEntry);
 router.put("/updateDiaryEntry/:id", diaries.updateDiaryEntry);
 router.delete("/deleteDiaryEntry/:id", diaries.deleteDiaryEntry);
-router.get("/getDiaryEntry/:diaryId/:patientId", diaries.getDiaryEntry);
+router.get("/getDiaryEntry/:diaryId", diaries.getDiaryEntry);
+router.get("/getPatientsEntry/:patientId/:diaryId", diaries.getPatientsEntry);
 router.get("/getAllDiaryEntries", diaries.getAllDiaryEntries);
-router.post("/searchDiaryEntries", diaries.searchDiaryEntries);
-// router.post("/getPatientsEntries", diaries.getPatientsEntries);
+router.get("/getPatientsEntries/:patientId", diaries.getPatientsEntries);
+router.get("/searchDiary/:search", diaries.searchDiary);
+router.get("/searchPatientsDiary/:search/:patientId", diaries.searchPatientsDiary);
+
 
 export default router;
