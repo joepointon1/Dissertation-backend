@@ -64,11 +64,9 @@ const getDiaryEntry = (req, res) => {
 	let userId;
 	if (req.params.patientId != null) {
 		if (!isPatientInTherapistList(req.userId, req.body.patientId)) {
-			return res
-				.status(403)
-				.send({
-					message: `patient ${req.params.patientId} not in therapists list`,
-				});
+			return res.status(403).send({
+				message: `patient ${req.params.patientId} not in therapists list`,
+			});
 		}
 		userId = req.params.patientId;
 	} else {

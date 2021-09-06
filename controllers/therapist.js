@@ -1,5 +1,5 @@
 import User from "../models/user.js";
-import Patient from "../models/patients.js";
+import Patient from "../models/patient.js";
 
 const addPatient = (req, res) => {
 	if (!req.body.email) {
