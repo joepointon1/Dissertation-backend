@@ -72,7 +72,7 @@ const getDiaryEntry = (req, res) => {
 	} else {
 		userId = req.userId;
 	}
-
+	
 	Diary.find({ user: userId, _id: diaryId })
 		.then((data) => {
 			if (data.length == 0) {
@@ -103,9 +103,9 @@ const getPatientsEntries = (req, res) => {
 };
 
 const searchDiaryEntries = async (req, res) => {
-	const userId = req.userId;
+	
 	const searchString = req.body.search;
-
+	const userId = assignId(req.userId, req.body.patientId, res)
 	Diary.find({ user: userId })
 		.find({
 			$text: {
@@ -125,6 +125,21 @@ const searchDiaryEntries = async (req, res) => {
 			res.status(500).send(err);
 		});
 };
+
+function assignId(currentUserId, patientId, res){
+		if(patientId != null){
+			if (!isPatientInTherapistList(currentUserId, req.body.patientId)) {
+				res.status(403).send({
+					message: `patient ${req.params.patientId} not in therapists list`,
+				});
+				return null;
+			}
+		 return req.body.patientId
+		}else{
+			return currentUserId
+		}
+		
+}
 
 export default {
 	createDiaryEntry,
