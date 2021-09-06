@@ -62,7 +62,7 @@ const getDiaryEntry = (req, res) => {
 	const diaryId = req.params.diaryId;
 
 	const userId = assignId(req.userId, req.params.patientId);
-	if (userId = null) return res.status(403).send({
+	if (userId == null) return res.status(403).send({
 		message: `patient ${patientId} not in therapists list`,
 	}); 
 	
@@ -85,7 +85,7 @@ const getDiaryEntry = (req, res) => {
 
 const getAllDiaryEntries = (req, res) => {
 	const userId = assignId(req.userId, req.patientId)
-	if (userId = null) return res.status(403).send({
+	if (userId == null) return res.status(403).send({
 		message: `patient ${patientId} not in therapists list`,
 	}); 
 
@@ -119,7 +119,7 @@ const searchDiaryEntries = async (req, res) => {
 	
 	const searchString = req.body.search;
 	const userId = assignId(req.userId, req.body.patientId)
-	if (userId = null) return res.status(403).send({
+	if (userId == null) return res.status(403).send({
 		message: `patient ${patientId} not in therapists list`,
 	}); 
 
