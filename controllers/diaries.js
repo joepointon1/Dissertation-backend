@@ -134,7 +134,7 @@ function assignId(currentUserId, patientId, res){
 				});
 				return null;
 			}
-		 return req.body.patientId
+		 return patientId
 		}else{
 			return currentUserId
 		}
