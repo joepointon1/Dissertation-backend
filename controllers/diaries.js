@@ -59,16 +59,22 @@ const deleteDiaryEntry = (req, res) => {
 };
 
 const getDiaryEntry = (req, res) => {
-  const diaryId = req.params.diaryId
-	let userId;
+	const diaryId = req.params.diaryId;
 
+	let userId;
 	if (req.params.patientId != null) {
+		if (!isPatientInTherapistList(req.userId, req.body.patientId)) {
+			return res
+				.status(403)
+				.send({
+					message: `patient ${req.params.patientId} not in therapists list`,
+				});
+		}
 		userId = req.params.patientId;
 	} else {
 		userId = req.userId;
 	}
 
-	console.log(diaryId, userId)
 	Diary.find({ user: userId, _id: diaryId })
 		.then((data) => {
 			if (data.length == 0) {
@@ -155,11 +161,9 @@ function getEntries(userId, res) {
 	)
 		.then((data) => {
 			if (data.length == 0)
-				return res
-					.status(404)
-					.send({
-						message: `No entries found for user id ${userId}`,
-					});
+				return res.status(404).send({
+					message: `No entries found for user id ${userId}`,
+				});
 			return res.send(data);
 		})
 		.catch((err) => {
