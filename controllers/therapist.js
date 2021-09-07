@@ -16,14 +16,14 @@ const addPatient = (req, res) => {
 			});
 
 		Patient.findOne({ email: req.body.email }).exec((err, patient) => {
-			if(patient){
+			if (patient) {
 				if (patient.therapistID == userId) {
 					return res
 						.status(409)
 						.send({ message: "Error: User already in your list" });
-				} 
+				}
 			}
-			
+
 			const newPatient = new Patient({
 				therapistId: userId,
 				firstName: patient.firstName,
@@ -33,26 +33,52 @@ const addPatient = (req, res) => {
 			});
 
 			newPatient.save((err, patient) => {
-				if (err)
-					return res.status(500).send({ message: err.message });
+				if (err) return res.status(500).send({ message: err.message });
 				return res.send({
 					message: "Success: patient added to list",
 				});
 			});
-			
 		});
 	});
 };
 
-const removePatient = (req, res) => {
+const removePatient = async (req, res) => {
 	const userId = req.userId;
-	Patient.deleteOne({ therapistId: userId, email: req.params.email })
-		.then((data) => {
-			return res.send(data);
-		})
-		.catch((err) => {
-			return res.status(404).send({ message: err.message });
+	//first check that patient is not in the list of the therapist
+	try {
+		const patient = await Patient.findOne({
+			therapistId: userId,
+			email: req.params.email,
 		});
+		if (patient == null)
+			return res
+				.status(404)
+				.send({ message: "Patient not in your list" });
+		
+		const response = await Patient.deleteOne({ therapistId: userId, email: req.params.email })
+		return res.send(response)
+	} catch (err) {
+		console.log(err);
+	}
+
+	// Patient.findOne({ therapistId: userId, email: req.params.email })
+	// 	.then((patient) => {
+	// 		if (patient == null)
+	// 			return res
+	// 				.status(404)
+	// 				.send({ message: "Patient not in your list" });
+	// 		//if patient is in list then delete
+	// 		Patient.deleteOne({ therapistId: userId, email: req.params.email })
+	// 			.then((data) => {
+	// 				return res.send(data);
+	// 			})
+	// 			.catch((err) => {
+	// 				return res.status(404).send({ message: err.message });
+	// 			});
+	// 	})
+	// 	.catch((err) => {
+	// 		return res.status(404).send({ message: err.message });
+	// 	});
 };
 
 const getAllPatients = (req, res) => {
