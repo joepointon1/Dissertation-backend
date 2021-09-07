@@ -30,15 +30,8 @@ const addPatient = (req, res) => {
 };
 
 const removePatient = (req, res) => {
-	//check an email has been provided
-	if (!req.body.email)
-		return res
-			.status(400)
-			.send({
-				message: "First name and last name or email must be provided",
-			});
 	const userId = req.userId;
-	Patient.deleteOne({ therapistId: userId, email: req.body.email })
+	Patient.deleteOne({ therapistId: userId, email: req.params.email })
 		.then((data) => {
 			return res.send(data);
 		})
