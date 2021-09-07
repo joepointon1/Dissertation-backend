@@ -1,5 +1,5 @@
-import User from "../models/user.js";
 import CheckIn from "../models/checkIn.js";
+import isPatientInTherapistList from "../helpers/isPatientInTherapistList.js";
 
 const createCheckIn = (req, res) => {
 	// const username = req.params.username;
@@ -51,27 +51,33 @@ const deleteCheckIn = (req, res) => {
 };
 
 const getCheckIn = (req, res) => {
-	const checkInId = req.params.id;
-	const userId = req.userId;
-
-	CheckIn.find({ user: userId, _id: checkInId })
-		.then((data) => {
-			if (data.length == 0)
-				return res
-					.status(404)
-					.send({ message: `No entries found with id ${checkInId}` });
-			return res.send(data);
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message: `Error while trying to retrieve check in with id ${checkInId}`,
-			});
-		});
+	retrieveCheckIn(req.userId, req.params.id, res)
 };
 
-const getAllCheckIns = (req, res) => {
-	const userId = req.userId;
+const getPatientsCheckIn = (req, res) => {
+	if(isPatientInTherapistList(req.userId, req.params.patientId)){
+		retrieveCheckIn(req.patientId, req.params.id, res)
+	}else{
+		return res.staus(404).send({message:"user not in therapist list"})
+	}
+	retrieveCheckIn()
+}
 
+
+
+const getAllCheckIns = (req, res) => {
+	retrieveAllCheckIns(req.userId, res)
+};
+
+const getAllPatientsCheckIns = (req, res, next) => {
+	if(isPatientInTherapistList(req.userId, req.params.patientId)){
+		retrieveAllCheckIns(req.params.patientId, res)
+	}else{
+		return res.statis(404).send({message:"user not in Therapist list"})
+	}
+}
+
+function retrieveAllCheckIns(userId, res){
 	CheckIn.find({ user: userId })
 		.then((data) => {
 			if (!data) {
@@ -89,12 +95,30 @@ const getAllCheckIns = (req, res) => {
 					`Error occured while trying to get checkins for user ${userId}`,
 			});
 		});
-};
+}
 
 export default {
 	createCheckIn,
 	updateCheckIn,
 	deleteCheckIn,
 	getCheckIn,
+	getPatientsCheckIn,
 	getAllCheckIns,
+	getAllPatientsCheckIns
 };
+
+function retrieveCheckIn(userId, checkInId, res){
+	CheckIn.find({ user: userId, _id: checkInId })
+		.then((data) => {
+			if (data.length == 0)
+				return res
+					.status(404)
+					.send({ message: `No entries found with id ${checkInId}` });
+			return res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: `Error while trying to retrieve check in with id ${checkInId}`,
+			});
+		});
+}

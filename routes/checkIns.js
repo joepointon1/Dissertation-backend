@@ -11,6 +11,7 @@ router.post("/createCheckIn", checkIns.createCheckIn);
 router.put("/updateCheckIn/:id", checkIns.updateCheckIn);
 router.delete("/deleteCheckIn/:id", checkIns.deleteCheckIn);
 router.get("/getCheckIn/:id", checkIns.getCheckIn);
+router.get("/getPatientsCheckIn/:patientId", checkIns.getPatientsCheckIn)
 router.get("/getAllCheckIns", checkIns.getAllCheckIns);
-
+router.get("/getAllPatientsCheckIns", checkIns.getAllPatientsCheckIns)
 export default router;

@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import indexOfAttr from "../helpers/indexOfAttr.js";
 import Diary from "../models/diary.js";
 import Patient from "../models/patient.js";
+import isPatientInTherapistList from "../helpers/isPatientInTherapistList.js"
 
 const createDiaryEntry = (req, res) => {
 	const userId = req.userId;
@@ -161,38 +162,23 @@ function assignId(currentUserId, patientId){
 	}
 }
 
-async function isPatientInTherapistList(id, patientId) {
-	try {
-		const data = await Patient.find({ therapistId: id });
-		if (data.length == 0) result = false;
-		const patient = data.find((p) => p.patientId == patientId);
-		if (patient) {
-			return true;
-		} else {
-			return false;
-		}
-	} catch (err) {
-		//maybe should return something else here
-		return false;
-	}
-}
-
-// function isPatientInTherapistList(id, patientId) {
-// 	Patient.find({ therapistId: id })
-// 		.then((data) => {
-// 			if (data.length == 0) result = false;
-// 			const patient = data.find((p) => p.patientId == patientId);
-// 			if (patient) {
-// 				return true;
-// 			} else {
-// 				return false;
-// 			}
-// 		})
-// 		.catch((err) => {
-// 			console.log(err);
+// async function isPatientInTherapistList(id, patientId) {
+// 	try {
+// 		const data = await Patient.find({ therapistId: id });
+// 		if (data.length == 0) result = false;
+// 		const patient = data.find((p) => p.patientId == patientId);
+// 		if (patient) {
+// 			return true;
+// 		} else {
 // 			return false;
-// 		});
+// 		}
+// 	} catch (err) {
+// 		//maybe should return something else here
+// 		return false;
+// 	}
 // }
+
+
 
 function getEntries(userId, res) {
 	Diary.find(
