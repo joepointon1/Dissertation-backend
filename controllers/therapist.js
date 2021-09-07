@@ -14,29 +14,32 @@ const addPatient = (req, res) => {
 			return res.status(404).send({
 				message: `Error: no user with email address ${req.body.email}`,
 			});
-			
-		Patient.findOne({ email: req.body.email }).exec((err, patient) => {
-			if (patient.therapistID == userId) {
-				return res
-					.status(409)
-					.send({ message: "Error: User already in your list" });
-			} else {
-				const newPatient = new Patient({
-					therapistId: userId,
-					firstName: patient.firstName,
-					lastName: patient.lastName,
-					patientId: patient._id,
-					...req.body,
-				});
 
-				newPatient.save((err, patient) => {
-					if (err)
-						return res.status(500).send({ message: err.message });
-					return res.send({
-						message: "Success: patient added to list",
-					});
-				});
+		Patient.findOne({ email: req.body.email }).exec((err, patient) => {
+			if(patient){
+				if (patient.therapistID == userId) {
+					return res
+						.status(409)
+						.send({ message: "Error: User already in your list" });
+				} 
 			}
+			
+			const newPatient = new Patient({
+				therapistId: userId,
+				firstName: patient.firstName,
+				lastName: patient.lastName,
+				patientId: patient._id,
+				...req.body,
+			});
+
+			newPatient.save((err, patient) => {
+				if (err)
+					return res.status(500).send({ message: err.message });
+				return res.send({
+					message: "Success: patient added to list",
+				});
+			});
+			
 		});
 	});
 };
