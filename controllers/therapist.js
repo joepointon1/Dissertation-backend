@@ -1,50 +1,59 @@
 import User from "../models/user.js";
 import Patient from "../models/patient.js";
 
-const addPatient = (req, res) => {
+const addPatient = async (req, res) => {
 	if (!req.body.email) {
 		return res.status(400).send({ message: "Email must not be blank" });
 	}
 	const userId = req.userId;
-	//check that the user to be added exists
-	User.findOne({ email: req.body.email }).exec((err, patient) => {
-		if (err) return res.status(500).send({ message: err.message });
-
-		if (!patient)
+	
+	try{
+		//check that the user to be added exists
+		const patient = await User.findOne({ email: req.body.email })
+		console.log("Patient", patient)
+		if (patient==null){
 			return res.status(404).send({
 				message: `Error: no user with email address ${req.body.email}`,
 			});
-
-		Patient.findOne({ email: req.body.email }).exec((err, patient) => {
-			if (patient) {
-				if (patient.therapistID == userId) {
-					return res
-						.status(409)
-						.send({ message: "Error: User already in your list" });
-				}
+		}
+		//check that user is not already in the therapists list
+		const checkPatient = await Patient.findOne({ email: req.body.email });
+		if(checkPatient){	
+			if (checkPatient.therapistId == userId) {
+				return res
+					.status(409)
+					.send({ message: "Error: User already in your list" });
+			} else{
+				console.log("fail")
 			}
+		}
+		
+		//create new patient obejct
+		const newPatient = new Patient({
+			therapistId: userId,
+			firstName: patient.firstName,
+			lastName: patient.lastName,
+			patientId: patient._id,
+			...req.body,
+		});
 
-			const newPatient = new Patient({
-				therapistId: userId,
-				firstName: patient.firstName,
-				lastName: patient.lastName,
-				patientId: patient._id,
-				...req.body,
-			});
-
-			newPatient.save((err, patient) => {
-				if (err) return res.status(500).send({ message: err.message });
-				return res.send({
-					message: "Success: patient added to list",
-				});
+		//save to database
+		newPatient.save((err, patient) => {
+			if (err)
+				return res.status(500).send({ message: err.message });
+			return res.send({
+				message: "Success: patient added to list",
 			});
 		});
-	});
+	}catch(err){
+		console.log(err)
+		return res.status(500).send({ message: err.message });
+	}
 };
 
 const removePatient = async (req, res) => {
 	const userId = req.userId;
-	//first check that patient is not in the list of the therapist
+	//first check that patient is not in the list of the therapist, then delete patient
 	try {
 		const patient = await Patient.findOne({
 			therapistId: userId,
@@ -53,32 +62,13 @@ const removePatient = async (req, res) => {
 		if (patient == null)
 			return res
 				.status(404)
-				.send({ message: "Patient not in your list" });
+				.send({ message: "Error: Patient not in your list, check email is correct" });
 		
 		const response = await Patient.deleteOne({ therapistId: userId, email: req.params.email })
 		return res.send(response)
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
-
-	// Patient.findOne({ therapistId: userId, email: req.params.email })
-	// 	.then((patient) => {
-	// 		if (patient == null)
-	// 			return res
-	// 				.status(404)
-	// 				.send({ message: "Patient not in your list" });
-	// 		//if patient is in list then delete
-	// 		Patient.deleteOne({ therapistId: userId, email: req.params.email })
-	// 			.then((data) => {
-	// 				return res.send(data);
-	// 			})
-	// 			.catch((err) => {
-	// 				return res.status(404).send({ message: err.message });
-	// 			});
-	// 	})
-	// 	.catch((err) => {
-	// 		return res.status(404).send({ message: err.message });
-	// 	});
 };
 
 const getAllPatients = (req, res) => {
