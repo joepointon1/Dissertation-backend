@@ -4,7 +4,7 @@ import isPatientInTherapistList from "../helpers/isPatientInTherapistList.js";
 const createCheckIn = (req, res) => {
 	// const username = req.params.username;
 	const userId = req.userId;
-	console.log(...req.body)
+	console.log({...req.body})
 	const checkIn = new CheckIn({ user: userId, ...req.body });
 	checkIn.save((err, entry) => {
 		if (err) return res.status(500).send({ message: err.message });
