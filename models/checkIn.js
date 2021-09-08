@@ -8,11 +8,9 @@ const CheckInSchema = new Schema(
 			type: String,
 			require: true,
 		},
-		emotions: [
-			{
-				type: Array,
-			},
-		],
+		emotions: {
+			type: Array,
+		},
 		intensity: {
 			type: Array,
 		},
@@ -29,8 +27,8 @@ const CheckInSchema = new Schema(
 );
 
 CheckInSchema.index({
-	note:"text"
-})
+	note: "text",
+});
 
 const CheckIn = mongoose.model("CheckIn", CheckInSchema);
 
