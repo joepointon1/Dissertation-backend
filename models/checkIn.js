@@ -28,6 +28,10 @@ const CheckInSchema = new Schema(
 	}
 );
 
+CheckInSchema.index({
+	note:"text"
+})
+
 const CheckIn = mongoose.model("CheckIn", CheckInSchema);
 
 export default CheckIn;
