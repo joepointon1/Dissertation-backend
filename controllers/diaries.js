@@ -8,7 +8,7 @@ const createDiaryEntry = (req, res) => {
 	const userId = req.userId;
 
 	if (!req.body.title) {
-		res.status(400).send({ message: "Title must not be blank" });
+		res.status(400).send({ message: "Error: Title must not be blank" });
 		return;
 	}
 	const diary = new Diary({ user: userId, ...req.body });
@@ -20,7 +20,7 @@ const createDiaryEntry = (req, res) => {
 
 const updateDiaryEntry = (req, res) => {
 	if (!req.body) {
-		return res.status(400).send({ message: "body cannot be empty" });
+		return res.status(400).send({ message: "Error: body cannot be empty" });
 	}
 	const userId = req.userId;
 	const diaryId = req.params.id;
@@ -68,7 +68,7 @@ const getPatientsEntry = (req, res) => {
 	if (isPatientInTherapistList(req.userId, req.params.patientId)) {
 		getEntry(req.params.patientId, req.params.diaryId, res);
 	} else {
-		return res.status(404).send({ messsage: "User not in therapist list" });
+		return res.status(404).send({ messsage: "Error: User not in therapist list" });
 	}
 }
 
@@ -81,7 +81,7 @@ const getPatientsEntries = (req, res) => {
 	if (isPatientInTherapistList(req.userId, req.params.patientId)) {
 		getEntries(req.params.patientId, res);
 	} else {
-		return res.status(404).send({ messsage: "User not in therapist list" });
+		return res.status(404).send({ messsage: "Error: User not in therapist list" });
 	}
 };
 
@@ -94,7 +94,7 @@ const searchPatientsDiary = async (req,res) => {
 	if (isPatientInTherapistList(req.userId, req.params.patientId)) {
 		searchEntries(req.params.patientId, req.params.search,res);
 	} else {
-		return res.status(404).send({ messsage: "User not in therapist list" });
+		return res.status(404).send({ messsage: "Error: User not in therapist list" });
 	}
 }
 
@@ -111,7 +111,7 @@ async function searchEntries(userId, searchString, res){
 			if (data.length == 0)
 				return res
 					.status(204)
-					.send({ message: "No results found for that search term" });
+					.send({ message: "Error: No results found for that search term" });
 			res.send(data);
 		})
 		.catch((err) => {
@@ -138,7 +138,7 @@ async function getEntry(userId, diaryId, res) {
 			if (data.length == 0) {
 				return res
 					.status(404)
-					.send({ message: `No entries found with id ${diaryId}` });
+					.send({ message: `Error: No entries found with id ${diaryId}` });
 			} else {
 				return res.send(data);
 			}
