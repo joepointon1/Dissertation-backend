@@ -4,12 +4,15 @@ import bcrypt from "bcrypt";
 
 export const signUp = (req, res) => {
 	console.log(req.body);
+	if(req.body.password != req.body.password2){
+		res.status(400).send({message: "Error: passwords do not match"})
+	}
 	const user = new User(req.body);
 
 	user.save((err, user) => {
 		if (err) {
 			console.log(err);
-			res.status(500).send({ message: err });
+			res.status(400).send({ message: err });
 			return;
 		}
 		res.send({ message: "User successfully registered" });
