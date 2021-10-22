@@ -59,7 +59,7 @@ const getPatientsCheckIn = (req, res) => {
 	if(isPatientInTherapistList(req.userId, req.params.patientId)){
 		retrieveCheckIn(req.params.patientId, req.params.checkInId, res)
 	}else{
-		return res.staus(404).send({message:"user not in therapist list"})
+		return res.status(404).send({message:"user not in therapist list"})
 	}
 	retrieveCheckIn()
 }
@@ -74,7 +74,7 @@ const getAllPatientsCheckIns = (req, res, next) => {
 	if(isPatientInTherapistList(req.userId, req.params.patientId)){
 		retrieveAllCheckIns(req.params.patientId, res)
 	}else{
-		return res.statis(404).send({message:"user not in Therapist list"})
+		return res.status(404).send({message:"user not in Therapist list"})
 	}
 }
 
