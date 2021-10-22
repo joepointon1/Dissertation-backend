@@ -13,7 +13,7 @@ const addPatient = async (req, res) => {
 		console.log("Patient", patient)
 		if (patient==null){
 			return res.status(404).send({
-				message: `Error: no user with email address ${req.body.email}`,
+				message: `Error: No user with email address ${req.body.email}`,
 			});
 		}
 		//check that user is not already in the therapists list
@@ -42,7 +42,7 @@ const addPatient = async (req, res) => {
 			if (err)
 				return res.status(500).send({ message: err.message });
 			return res.send({
-				message: "Success: patient added to list",
+				message: "Success: Patient added to list",
 			});
 		});
 	}catch(err){
@@ -64,7 +64,7 @@ const removePatient = async (req, res) => {
 				.status(404)
 				.send({ message: "Error: Patient not in your list, check email is correct" });
 		
-		const response = await Patient.deleteOne({ therapistId: userId, email: req.params.email })
+		response = await Patient.deleteOne({ therapistId: userId, email: req.params.email })
 		return res.send(response)
 	} catch (err) {
 		console.log(err.message);

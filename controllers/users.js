@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 export const signUp = (req, res) => {
 	console.log(req.body);
 	if(req.body.password != req.body.password2){
-		res.status(400).send({message: "Error: passwords do not match"})
+		res.status(400).send({message: "Error: Passwords do not match"})
 		return 
 	}
 	const user = new User(req.body);

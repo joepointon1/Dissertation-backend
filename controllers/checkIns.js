@@ -57,7 +57,7 @@ const getCheckIn = (req, res) => {
 
 const getPatientsCheckIn = (req, res) => {
 	if(isPatientInTherapistList(req.userId, req.params.patientId)){
-		retrieveCheckIn(req.patientId, req.params.id, res)
+		retrieveCheckIn(req.params.patientId, req.params.checkInId, res)
 	}else{
 		return res.staus(404).send({message:"user not in therapist list"})
 	}
