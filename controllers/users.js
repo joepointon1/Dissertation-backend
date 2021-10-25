@@ -51,7 +51,7 @@ export const signIn = (req, res) => {
 						isTherapist: user.isTherapist,
 						rememberMe: req.body.rememberMe == "checked" ? true : false,
 					},
-					"top-secret",
+					process.env.jwtkey,
 					{ expiresIn: 86400 }
 				);
 		
@@ -68,7 +68,7 @@ export const validateToken = (req, res) => {
 	// used when user auto logged in by remember me to check token
 	const token = req.body.token;
 
-	jwt.verify(token, "top-secret", (err, decoded) => {
+	jwt.verify(token, process.env.jwtkey, (err, decoded) => {
 		if (err) {
 			return res.status(401).send({ message: "User not authorized" });
 		} else {

@@ -20,7 +20,7 @@ app.use("/", checkInRoutes);
 app.use("/", therapistRoutes);
 
 const dbURI =
-	"mongodb+srv://testuser:testuser123@cluster0.lumrw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+	`mongodb+srv://testuser:${process.env.DBpassword}@cluster0.lumrw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 mongoose.set("debug", true);
 mongoose
 	.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
