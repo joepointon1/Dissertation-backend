@@ -7,7 +7,7 @@ const verifyToken = (req, res, next) => {
 		return res.status(401).send({ message: "Token not provided" });
 	}
 
-	jwt.verify(token, "top-secret", (err, decoded) => {
+	jwt.verify(token, process.env.jwtkey, (err, decoded) => {
 		if (err) {
 			return res.status(401).send({ message: "User not authorized" });
 		}
