@@ -33,13 +33,10 @@ export const signIn = (req, res) => {
 			return res.status(404).send({ message: "User not found." });
 		}
 
-		let passwordIsValid;
 		bcrypt
 			.compare(req.body.password, user.password)
-			.then((result) => {
-				passwordIsValid = result
-				
-				if (!passwordIsValid) {
+			.then((passwordValid) => {
+				if (!passwordValid) {
 					return res
 						.status(401)
 						.send({ acessToken: null, message: "Invalid password." });
@@ -52,15 +49,13 @@ export const signIn = (req, res) => {
 						rememberMe: req.body.rememberMe == "checked" ? true : false,
 					},
 					process.env.jwtkey,
-					{ expiresIn: 86400 }
+					{ expiresIn: 1209600 }
 				);
 		
 				res.status(200).send({
 					accessToken: token,
 				});
 			});
-
-		
 	});
 };
 

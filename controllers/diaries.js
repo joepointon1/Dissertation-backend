@@ -1,7 +1,4 @@
-import User from "../models/user.js";
-import indexOfAttr from "../helpers/indexOfAttr.js";
 import Diary from "../models/diary.js";
-import Patient from "../models/patient.js";
 import isPatientInTherapistList from "../helpers/isPatientInTherapistList.js";
 
 const createDiaryEntry = (req, res) => {
