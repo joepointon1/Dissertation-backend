@@ -64,8 +64,8 @@ const removePatient = async (req, res) => {
 				.status(404)
 				.send({ message: "Error: Patient not in your list, check email is correct" });
 		
-		response = await Patient.deleteOne({ therapistId: userId, email: req.params.email })
-		return res.status(200).send()
+	  const response = await Patient.deleteOne({ therapistId: userId, email: req.params.email })
+		return res.send(response)
 	} catch (err) {
 		console.log(err.message);
 	}
